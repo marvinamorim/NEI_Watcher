@@ -1,4 +1,12 @@
 
+### Database ###
+*.accdb
+*.db
+*.dbf
+*.mdb
+*.pdb
+*.sqlite3
+
 ### Code ###
 .vscode
 !.vscode/settings.json
@@ -122,7 +130,7 @@ celerybeat.pid
 
 # Environments
 .env
-.venv
+.venv/
 env/
 venv/
 ENV/

@@ -1,9 +1,11 @@
-import telebot
 import dataset
+import telebot
 
-db = dataset.connect("sqlite:///mydatabase.db")
-table = db["users"]
-bot = telebot.TeleBot("#TOKEN#")
+from config import settings
+
+db = dataset.connect(settings.DB)
+table = db[settings.USER]
+bot = telebot.TeleBot(settings.TOKEN)
 
 
 @bot.message_handler(commands=["start"])
@@ -18,8 +20,9 @@ def start(message):
         user_name = message.from_user.username
         print(message)
         full_name = (
-            f"{message.from_user.first_name}"
-			f"{message.from_user.last_name.strip()}" if message.from_user.last_name != None else ""
+            f"{message.from_user.first_name}" f"{message.from_user.last_name.strip()}"
+            if message.from_user.last_name != None
+            else ""
         )
         table.insert(dict(id=message.chat.id, user_name=user_name, full_name=full_name))
     else:
@@ -44,12 +47,12 @@ def start(message):
 
 
 def send_noticia(title, url):
-	response = "Nova noticia:\n" f"{title}\n{url}"
-	users = table.find()
-	for user in users:
-		bot.send_message(user["id"], response)
-	return True
+    response = "Nova noticia:\n" f"{title}\n{url}"
+    users = table.find()
+    for user in users:
+        bot.send_message(user["id"], response)
+    return True
 
 
 if __name__ == "__main__":
-	bot.polling()
+    bot.polling()
