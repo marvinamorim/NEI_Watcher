@@ -1,22 +1,14 @@
-import dataset
-import schedule
-
-from requests_html import HTMLSession
-from telegram import send_noticia
 from time import sleep
 
+import dataset
+import schedule
+from requests_html import HTMLSession
 
-db = dataset.connect("sqlite:///mydatabase.db")
-table = db["noticias"]
+from config import settings
+from telegram import send_noticia
 
-
-session = HTMLSession()
-
-
-main_url = "https://nei.ufrn.br"
-noticias_path = "/acontecenei/noticias"
-search_url = f"{main_url}{noticias_path}"
-search_path = ".noticia-xxs-link"
+db = dataset.connect(settings.DB)
+table = db[settings.NEWS]
 
 
 def format_title(title):
@@ -29,12 +21,14 @@ def format_title(title):
 
 
 def find_noticias():
-    r = session.get(search_url)
+    session = HTMLSession()
+    r = session.get(settings.URL)
+    search_path = ".noticia-xxs-link"
     noticias = r.html.find(search_path)
     for noticia in noticias:
         noticia_href = noticia.attrs["href"]
         noticia_id = int(noticia_href.split("/")[-1])
-        noticia_url = f"{main_url}{noticia_href}"
+        noticia_url = f"{settings.URL}{noticia_href}"
         p = noticia.find("p")
         noticia_title = p[0].text
         if table.find_one(id=[noticia_id]) == None:
