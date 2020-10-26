@@ -1,4 +1,5 @@
 USER="users"
 NEWS="noticias"
-URL="https://nei.ufrn.br//acontecenei/noticias"
+URL_MAIN="https://nei.ufrn.br"
+URL_PATH="/acontecenei/noticias"
 DB="sqlite:///mydatabase.db"

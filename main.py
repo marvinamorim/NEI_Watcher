@@ -23,15 +23,16 @@ def format_title(title):
 
 def find_noticias():
     session = HTMLSession()
-    r = session.get(settings.URL)
+    r = session.get(f'{settings.URL_MAIN}{settings.URL_PATH}')
     search_path = ".noticia-xxs-link"
     noticias = r.html.find(search_path)
     for noticia in noticias:
         noticia_href = noticia.attrs["href"]
         noticia_id = int(noticia_href.split("/")[-1])
-        noticia_url = f"{settings.URL}{noticia_href}"
+        noticia_url = f"{settings.URL_MAIN}{noticia_href}"
         p = noticia.find("p")
         noticia_title = p[0].text
+        print(noticia_url)
         if table.find_one(id=[noticia_id]) == None:
             print(noticia_url)
             table.insert(dict(id=noticia_id, url=noticia_url, title=noticia_title))
@@ -39,7 +40,6 @@ def find_noticias():
 
 
 if __name__ == "__main__":
-    find_noticias()
     schedule.every().minute.do(find_noticias)
     while True:
         schedule.run_pending()
