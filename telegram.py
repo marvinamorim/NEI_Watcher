@@ -4,7 +4,7 @@ import telebot
 from config import settings
 from os import environ
 
-db = dataset.connect(settings.DB)
+db = dataset.connect(environ['DATABASE_URL'])
 table = db[settings.USER]
 bot = telebot.TeleBot(environ['TOKEN'])
 
@@ -19,12 +19,12 @@ def start(message):
             "Para remover o seu cadastro, basta enviar a mensagem: /sair"
         )
         user_name = message.from_user.username
-        print(message)
         full_name = (
             f"{message.from_user.first_name}" f"{message.from_user.last_name.strip()}"
             if message.from_user.last_name != None
             else ""
         )
+        print("New user",user_name, full_name)
         table.insert(dict(id=message.chat.id, user_name=user_name, full_name=full_name))
     else:
         response = "Você já está cadastrado."
