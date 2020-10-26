@@ -44,7 +44,9 @@ def start(message):
             "Caso deseja voltar a receber alertas, envie a mensagem: /start"
         )
         table.delete(id=message.chat.id)
+    print(f'User {message.chat.id} left')
     bot.send_message(message.chat.id, response)
+    
 
 
 def send_noticia(title, url):

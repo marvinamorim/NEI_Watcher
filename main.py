@@ -16,7 +16,6 @@ def format_title(title):
     title_split = title.split("-")
     new_title = ""
     for text in title_split:
-        print(text)
         new_title += text.capitalize() + " "
     return new_title
 
@@ -32,9 +31,8 @@ def find_noticias():
         noticia_url = f"{settings.URL_MAIN}{noticia_href}"
         p = noticia.find("p")
         noticia_title = p[0].text
-        print(noticia_url)
         if table.find_one(id=[noticia_id]) == None:
-            print(noticia_url)
+            print("Nova Noticia", noticia_url)
             table.insert(dict(id=noticia_id, url=noticia_url, title=noticia_title))
             send_noticia(noticia_title, noticia_url)
 
