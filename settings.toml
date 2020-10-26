@@ -1,3 +1,4 @@
 USER="users"
 NEWS="noticias"
 URL="https://nei.ufrn.br//acontecenei/noticias"
+DB="sqlite:///mydatabase.db"

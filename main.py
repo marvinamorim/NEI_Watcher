@@ -38,7 +38,8 @@ def find_noticias():
 
 
 if __name__ == "__main__":
-    schedule.every().minute().do(find_noticias)
+    find_noticias()
+    schedule.every().minute.do(find_noticias)
     while True:
-        schedule.run_peding()
+        schedule.run_pending()
         sleep(1)
