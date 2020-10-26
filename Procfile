@@ -1,1 +1,2 @@
-worker: python telegram.py
+register: python telegram.py
+alerter: python main.py
