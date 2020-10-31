@@ -2,4 +2,6 @@ USER="users"
 NEWS="noticias"
 URL_MAIN="https://nei.ufrn.br"
 URL_PATH="/acontecenei/noticias"
-DB="sqlite:///mydatabase.db"
+DB="postgres://postgres:neiwatcher@db/neiwatcher"
+TOKEN="MYTOKEN"
+
