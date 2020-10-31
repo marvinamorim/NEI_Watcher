@@ -1,9 +1,12 @@
-import telebot
 import dataset
+import telebot
 
-db = dataset.connect("sqlite:///mydatabase.db")
-table = db["users"]
-bot = telebot.TeleBot("#TOKEN#")
+from config import settings
+from os import environ
+
+db = dataset.connect(environ['DATABASE_URL'])
+table = db[settings.USER]
+bot = telebot.TeleBot(environ['TOKEN'])
 
 
 @bot.message_handler(commands=["start"])
@@ -16,11 +19,12 @@ def start(message):
             "Para remover o seu cadastro, basta enviar a mensagem: /sair"
         )
         user_name = message.from_user.username
-        print(message)
         full_name = (
-            f"{message.from_user.first_name}"
-			f"{message.from_user.last_name.strip()}" if message.from_user.last_name != None else ""
+            f"{message.from_user.first_name}" f"{message.from_user.last_name.strip()}"
+            if message.from_user.last_name != None
+            else ""
         )
+        print("New user",user_name, full_name)
         table.insert(dict(id=message.chat.id, user_name=user_name, full_name=full_name))
     else:
         response = "Você já está cadastrado."
@@ -40,16 +44,18 @@ def start(message):
             "Caso deseja voltar a receber alertas, envie a mensagem: /start"
         )
         table.delete(id=message.chat.id)
+    print(f'User {message.chat.id} left')
     bot.send_message(message.chat.id, response)
+    
 
 
 def send_noticia(title, url):
-	response = "Nova noticia:\n" f"{title}\n{url}"
-	users = table.find()
-	for user in users:
-		bot.send_message(user["id"], response)
-	return True
+    response = "Nova noticia:\n" f"{title}\n{url}"
+    users = table.find()
+    for user in users:
+        bot.send_message(user["id"], response)
+    return True
 
 
 if __name__ == "__main__":
-	bot.polling()
+    bot.polling()
