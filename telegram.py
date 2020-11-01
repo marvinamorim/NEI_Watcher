@@ -4,9 +4,9 @@ import telebot
 from config import settings
 from os import environ
 
-db = dataset.connect(environ['DATABASE_URL'])
+db = dataset.connect(settings.DB)
 table = db[settings.USER]
-bot = telebot.TeleBot(environ['TOKEN'])
+bot = telebot.TeleBot(settings.TOKEN)
 
 
 @bot.message_handler(commands=["start"])

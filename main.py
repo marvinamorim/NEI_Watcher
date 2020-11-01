@@ -8,7 +8,7 @@ from requests_html import HTMLSession
 from config import settings
 from telegram import send_noticia
 
-db = dataset.connect(environ['DATABASE_URL'])
+db = dataset.connect(settings.DB)
 table = db[settings.NEWS]
 
 
