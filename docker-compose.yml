@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  alerter:
+    command: python main.py
+    image: neiwatcher
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+  bot:
+    image: neiwatcher
+    command: python telegram.py
+    depends_on:
+      - alerter
+      - db
+  db:
+    image: "postgres:latest"
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=neiwatcher
+      - POSTGRES_DB=neiwatcher
+
+volumes:
+  db_data:
+
