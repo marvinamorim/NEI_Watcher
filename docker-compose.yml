@@ -1,0 +1,30 @@
+version: '3'
+services:
+  nei_watcher_telegram:
+    image: python:3-slim
+    container_name: nei_watcher_telegram
+    volumes:
+      - .:/home/volume
+    restart: on-failure
+    command: >
+      bash -c "cd /home/volume &&
+      pip install --upgrade pip && 
+      pip install -r ./requirements.txt &&
+      python telegram.py"
+    tty: true
+    environment:
+      TZ: "America/Sao_Paulo"
+  nei_watcher_main:
+    image: python:3-slim
+    container_name: nei_watcher_main
+    volumes:
+      - .:/home/volume
+    restart: on-failure
+    command: >
+      bash -c "cd /home/volume &&
+      pip install --upgrade pip && 
+      pip install -r ./requirements.txt &&
+      python main.py"
+    tty: true
+    environment:
+      TZ: "America/Sao_Paulo"

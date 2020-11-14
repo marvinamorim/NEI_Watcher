@@ -2,11 +2,10 @@ import dataset
 import telebot
 
 from config import settings
-from os import environ
 
-db = dataset.connect(environ['DATABASE_URL'])
+db = dataset.connect(settings.DATABASE_URL)
 table = db[settings.USER]
-bot = telebot.TeleBot(environ['TOKEN'])
+bot = telebot.TeleBot(settings.TOKEN)
 
 
 @bot.message_handler(commands=["start"])
@@ -58,4 +57,5 @@ def send_noticia(title, url):
 
 
 if __name__ == "__main__":
+    print("Started telegram")
     bot.polling()

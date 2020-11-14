@@ -1,5 +1,4 @@
 from time import sleep
-from os import environ
 
 import dataset
 import schedule
@@ -8,7 +7,7 @@ from requests_html import HTMLSession
 from config import settings
 from telegram import send_noticia
 
-db = dataset.connect(environ['DATABASE_URL'])
+db = dataset.connect(settings.DATABASE_URL)
 table = db[settings.NEWS]
 
 
@@ -38,7 +37,9 @@ def find_noticias():
 
 
 if __name__ == "__main__":
-    schedule.every().minute.do(find_noticias)
+    print("Started main")
+    find_noticias()
+    schedule.every(5).minutes.do(find_noticias)
     while True:
         schedule.run_pending()
         sleep(1)
